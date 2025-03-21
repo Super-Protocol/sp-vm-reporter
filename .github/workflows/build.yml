@@ -41,10 +41,11 @@ jobs:
             TAG_FULL=${REF#refs/*/};
             IMAGE_TAG=${TAG_FULL//\//_};
           fi
+          IMAGE="${IMAGE_NAME,,}"  # repository name must be lowercase
           echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
           echo "image_tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
-          echo "IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
-          echo "image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" >> $GITHUB_OUTPUT
+          echo "IMAGE=${{ env.REGISTRY }}/${IMAGE}" >> $GITHUB_ENV
+          echo "image=${{ env.REGISTRY }}/${IMAGE}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
