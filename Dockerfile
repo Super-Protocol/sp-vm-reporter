@@ -6,8 +6,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
 ADD https://github.com/argoproj/argo-cd/releases/download/v2.14.7/argocd-linux-amd64 /usr/local/bin/argocd
 RUN chmod +x /usr/local/bin/argocd
 
-RUN python3 -m pip install kubernetes
+COPY app/requirements.txt /app/requirements.txt
+WORKDIR "/app"
 
-COPY src/ /app
+RUN python3 -m pip install -r /app/requirements.txt
+
+COPY app/ /app
 
 CMD ["python3", "/app/main.py"]
