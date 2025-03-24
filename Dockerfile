@@ -1,4 +1,5 @@
 FROM python:3.13-slim-bookworm
+LABEL org.opencontainers.image.source="https://github.com/Super-Protocol/sp-vm-reporter"
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && \
     apt install -y curl jq
