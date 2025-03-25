@@ -27,7 +27,7 @@ class SPReporter:
     def _init_logs(self):
         logger = logging.getLogger()
         logHandler = logging.StreamHandler()
-        formatter = JsonFormatter("{filename}{levelname}{asctime}{message}", style="{")
+        formatter = JsonFormatter("{levelname}{asctime}{message}", style="{")
         logHandler.setFormatter(formatter)
         logger.addHandler(logHandler)
         logger.setLevel(logging.INFO)
@@ -64,19 +64,13 @@ class SPReporter:
                 pod_images = self.get_pod_images()
                 argocd_images = self.get_argocd_apps()
                 report = {
+                    "levelname": "REPORT",
                     "timestamp": time.time(),
                     "node_info": node_info,
                     "pod_images": pod_images,
                     "argocd_images": argocd_images,
                 }
-                logging.info(
-                    "Node: %s (%s)\nCollected images:\nPods: %s\nArgoCD: %s",
-                    node_info.get("node_name", "N/A"),
-                    node_info.get("node_ip", "N/A"),
-                    json.dumps(pod_images, indent=2),
-                    json.dumps(argocd_images, indent=2),
-                )
-                print(report)
+                print(json.dumps(report)),
             except Exception as e:
                 logging.error(f"Main loop error: {str(e)}")
             time.sleep(self.config.timeout)
