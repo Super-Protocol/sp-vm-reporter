@@ -113,7 +113,7 @@ class SPReporter:
             logging.warning("ArgoCD credentials not configured")
             return {}
 
-        if not argocd_login():
+        if not self.argocd_login():
             return {}
 
         try:
