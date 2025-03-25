@@ -69,7 +69,7 @@ class SPReporter:
                     "pod_images": pod_images,
                     "argocd_images": argocd_images,
                 }
-                logger.info(
+                logging.info(
                     "Node: %s (%s)\nCollected images:\nPods: %s\nArgoCD: %s",
                     node_info.get("node_name", "N/A"),
                     node_info.get("node_ip", "N/A"),
@@ -78,7 +78,7 @@ class SPReporter:
                 )
                 print(report)
             except Exception as e:
-                logger.error(f"Main loop error: {str(e)}")
+                logging.error(f"Main loop error: {str(e)}")
             time.sleep(self.config.TIMEOUT)
 
     def argocd_login(self):
@@ -98,10 +98,10 @@ class SPReporter:
             result = subprocess.run(
                 login_cmd, capture_output=True, text=True, check=True
             )
-            logger.info("ArgoCD login successful")
+            logging.info("ArgoCD login successful")
             return True
         except subprocess.CalledProcessError as e:
-            logger.error(f"ArgoCD login failed: {e.stderr}")
+            logging.error(f"ArgoCD login failed: {e.stderr}")
             return False
 
     def get_argocd_apps(self):
@@ -110,7 +110,7 @@ class SPReporter:
             or not self.config.argocd_user
             or not self.config.argocd_password
         ):
-            logger.warning("ArgoCD credentials not configured")
+            logging.warning("ArgoCD credentials not configured")
             return {}
 
         if not argocd_login():
@@ -130,10 +130,10 @@ class SPReporter:
                 if "images" in app["status"].get("summary", {})
             }
         except json.JSONDecodeError:
-            logger.error("Failed to parse ArgoCD output")
+            logging.error("Failed to parse ArgoCD output")
             return {}
         except Exception as e:
-            logger.error(f"Error getting ArgoCD apps: {str(e)}")
+            logging.error(f"Error getting ArgoCD apps: {str(e)}")
             return {}
 
     def get_node_info(self):
@@ -142,7 +142,7 @@ class SPReporter:
             v1 = client.CoreV1Api()
             node = v1.read_node(self.config.node_name)
             if not node.status:
-                logger.warning("Node status not available")
+                logging.warning("Node status not available")
                 return {"node_name": self.config.node_name, "node_ip": None}
             address_types = ["InternalIP", "ExternalIP", "Hostname"]
             for addr_type in address_types:
@@ -158,10 +158,10 @@ class SPReporter:
                         "cluster": "rke2",
                         "address_type": addr_type,
                     }
-            logger.warning("No valid addresses found for node")
+            logging.warning("No valid addresses found for node")
             return {"node_name": self.config.node_name, "node_ip": None}
         except Exception as e:
-            logger.error(f"Error getting node info: {str(e)}")
+            logging.error(f"Error getting node info: {str(e)}")
             return {}
 
     def get_pod_images(self):
@@ -174,7 +174,7 @@ class SPReporter:
                 if self.config.pod_name_pattern.match(p.metadata.name)
             }
         except Exception as e:
-            logger.error(f"Error getting pods: {str(e)}")
+            logging.error(f"Error getting pods: {str(e)}")
             return {}
 
 
