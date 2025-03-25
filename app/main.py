@@ -5,12 +5,13 @@ import logging
 import re
 import subprocess
 import base64
+from pydantic import BaseModel
 from kubernetes import client, config
 from pythonjsonlogger.json import JsonFormatter
 
 
-class SPReporterConfig:
-    timeout: str
+class SPReporterConfig(BaseModel):
+    timeout: int
     node_name: str
     pod_name_pattern: re.Pattern
     argocd_server: str
