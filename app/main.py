@@ -79,7 +79,7 @@ class SPReporter:
                 print(report)
             except Exception as e:
                 logging.error(f"Main loop error: {str(e)}")
-            time.sleep(self.config.TIMEOUT)
+            time.sleep(self.config.timeout)
 
     def argocd_login(self):
         try:
