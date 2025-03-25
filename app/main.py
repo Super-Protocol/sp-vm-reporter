@@ -70,7 +70,7 @@ class SPReporter:
                     "pod_images": pod_images,
                     "argocd_images": argocd_images,
                 }
-                print(json.dumps(report)),
+                print(json.dumps(report), flush=True)
             except Exception as e:
                 logging.error(f"Main loop error: {str(e)}")
             time.sleep(self.config.timeout)
