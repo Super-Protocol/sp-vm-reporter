@@ -47,7 +47,7 @@ class SPReporter:
 
     def _get_config(self) -> SPReporterConfig:
         return SPReporterConfig(
-            timeout=int(os.getenv("TIMEOUT", "120")),
+            timeout=int(os.getenv("TIMEOUT_MIN", "30")) * 60,
             node_name=os.getenv("NODE_NAME", ""),
             pod_name_pattern=re.compile(r"^(app-|exec|trusted-|registry)"),
             argocd_server=os.getenv(
