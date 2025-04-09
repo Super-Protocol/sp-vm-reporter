@@ -30,7 +30,7 @@ class SPReporter:
         formatter = JsonFormatter("{levelname}{asctime}{message}", style="{")
         logHandler.setFormatter(formatter)
         logger.addHandler(logHandler)
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.WARNING)
 
     def _get_argocd_password(self):
         try:
